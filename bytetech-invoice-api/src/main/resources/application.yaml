@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto:
+  datasource:
+    hikari:
+      connectionTimeout: '20000'
+      maximumPoolSize: '5'
+    password: example
+    username: postgres
+    url: jdbc:postgresql://192.168.68.61:5432/invoice
