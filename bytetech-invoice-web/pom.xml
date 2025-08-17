@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cloud.bytetech.invoice</groupId>
+        <artifactId>bytetech-invoice</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>bytetech-invoice-web</artifactId>
+    <name>bytetech-invoice-web</name>
+    <packaging>jar</packaging>
+
+    <build>
+        <plugins>
+            <!-- Node + pnpm + build -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.15.0</version>
+                <configuration>
+                    <workingDirectory>${project.basedir}</workingDirectory>
+                </configuration>
+                <executions>
+                    <!-- Install Node & npm (pnpm will run via npm exec) -->
+                    <execution>
+                        <id>install-node-and-npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <!-- Pick a Node LTS you’re happy with -->
+                        <configuration>
+                            <nodeVersion>v20.12.2</nodeVersion>
+                            <npmVersion>10.5.2</npmVersion>
+                        </configuration>
+                    </execution>
+
+                    <!-- Install pnpm globally (no && chaining) -->
+                    <execution>
+                        <id>install-pnpm</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install -g pnpm</arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- pnpm install (via npm exec) -->
+                    <execution>
+                        <id>pnpm-install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>exec pnpm install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- pnpm build (via npm exec) -->
+                    <execution>
+                        <id>pnpm-build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>exec pnpm run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Copy Vite dist/ into classpath:/static so Boot can serve the SPA -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dist-into-static</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/dist</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

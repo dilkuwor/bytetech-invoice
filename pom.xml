@@ -51,8 +51,7 @@
 
     <modules>
         <module>bytetech-invoice-api</module>
-        <!-- add when ready -->
-        <!-- <module>bytetech-invoice-web</module> -->
+         <module>bytetech-invoice-web</module>
         <module>bytetech-invoice-app</module>
     </modules>
 </project>

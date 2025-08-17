@@ -24,14 +24,12 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- Web module (uncomment when the module exists & is added in <modules>) -->
-        <!--
+        <!-- Web module assets (built to /dist and copied into classpath:/static) -->
         <dependency>
-          <groupId>cloud.bytetech.invoice</groupId>
-          <artifactId>bytetech-invoice-web</artifactId>
-          <version>${project.version}</version>
+            <groupId>cloud.bytetech.invoice</groupId>
+            <artifactId>bytetech-invoice-web</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        -->
 
         <!-- App-specific deps -->
         <dependency>
@@ -52,10 +50,17 @@
 
     <build>
         <plugins>
-            <!-- Version managed by root <pluginManagement> -->
+            <!-- Make the jar executable (adds Spring Boot launcher + Main-Class) -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
