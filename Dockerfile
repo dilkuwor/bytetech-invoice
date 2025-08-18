@@ -5,7 +5,7 @@ WORKDIR /src
 COPY pom.xml .
 COPY bytetech-invoice-api/pom.xml bytetech-invoice-api/pom.xml
 COPY bytetech-invoice-app/pom.xml bytetech-invoice-app/pom.xml
-COPY bytetech-invoice-web/pom.xml bytetech-invoice-web/pom.xml   # 👈 add this
+COPY bytetech-invoice-web/pom.xml bytetech-invoice-web/pom.xml
 
 # Pre-fetch deps (use the app pom as the entry point)
 RUN mvn -B -DskipTests -f bytetech-invoice-app/pom.xml -am dependency:go-offline
