@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/bytetech-invoice-0.0.1-SNAPSHOT.jar
+web: java -Dserver.port=$PORT -jar $(ls bytetech-invoice-app/target/*.jar | head -n 1)
