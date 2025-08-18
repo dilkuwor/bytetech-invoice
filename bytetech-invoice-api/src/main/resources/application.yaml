@@ -1,11 +1,19 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://192.168.68.61:5432/bytetech-invoice
+    username: postgres
+    password: example
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+
   jpa:
     hibernate:
-      ddl-auto:
-  datasource:
-    hikari:
-      connectionTimeout: '20000'
-      maximumPoolSize: '5'
-    password: example
-    username: postgres
-    url: jdbc:postgresql://192.168.68.61:5432/invoice
+      ddl-auto: update   # <-- let Hibernate auto-create/update tables
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+server:
+  port: 8080
