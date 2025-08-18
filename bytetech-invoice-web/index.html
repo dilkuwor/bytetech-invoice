@@ -1,13 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <title>ByteTech Invoice</title>
+    <style>
+        /* Prevent white flash in dark mode */
+        html.dark {
+          background-color: #4c1d95; /* primary-900 */
+        }
+        html {
+          background-color: #f5f3ff; /* primary-50 */
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-primary-50 dark:bg-primary-900">
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
 </html>
