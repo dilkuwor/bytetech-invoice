@@ -1,27 +1,23 @@
-# Dockerfile at the multi-module root (same dir as root pom.xml)
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /src
 
-# ---- Cache deps (fast rebuilds) ----
+# --- cache POMs for all modules referenced by the root aggregator ---
 COPY pom.xml .
 COPY bytetech-invoice-api/pom.xml bytetech-invoice-api/pom.xml
 COPY bytetech-invoice-app/pom.xml bytetech-invoice-app/pom.xml
-# If you have the web module and need it, uncomment:
-# COPY bytetech-invoice-web/pom.xml bytetech-invoice-web/pom.xml
+COPY bytetech-invoice-web/pom.xml bytetech-invoice-web/pom.xml   # 👈 add this
 
-# Pre-fetch deps for app (and its deps)
-RUN mvn -B -DskipTests -pl bytetech-invoice-app -am dependency:go-offline
+# Pre-fetch deps (use the app pom as the entry point)
+RUN mvn -B -DskipTests -f bytetech-invoice-app/pom.xml -am dependency:go-offline
 
-# ---- Build ----
+# --- build ---
 COPY . .
-# If your web module’s frontend plugin breaks builds, EITHER remove the app->web dependency,
-# OR pass a skip flag that your plugin honors (example below). Adjust property name to your POM.
-# RUN mvn -B -DskipTests -Dfrontend.skip=true -pl bytetech-invoice-app -am clean package
-RUN mvn -B -DskipTests -pl bytetech-invoice-app -am clean package
+# If your web module's frontend plugin causes issues inside Docker, skip it via a property your POM honors:
+# RUN mvn -B -DskipTests -Dfrontend.skip=true -f bytetech-invoice-app/pom.xml -am clean package
+RUN mvn -B -DskipTests -f bytetech-invoice-app/pom.xml -am clean package
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-# Correct path (no extra "bytetech-invoice/" in it)
 COPY --from=build /src/bytetech-invoice-app/target/bytetech-invoice-app-*.jar /app/app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app/app.jar"]
