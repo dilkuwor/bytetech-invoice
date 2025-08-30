@@ -3,9 +3,6 @@ import StatCard from "@/components/StatCard";
 export default function Dashboard() {
   return (
     <div className="space-y-6">
-      <div className="p-4 bg-white dark:bg-black text-black dark:text-white rounded">
-  Dark test block
-</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <StatCard title="Customers" value="12" hint="+2 this month" />
         <StatCard title="Active Subscriptions" value="9" hint="RDP seats billed" />

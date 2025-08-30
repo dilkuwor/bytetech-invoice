@@ -1,8 +1,7 @@
-sudo dokku apps:create bytetech-invoice
-sudo dokku apps:list
+caprover login --caproverUrl http://caprover.lan:3000 -p '!Dpksamir2'
 
-sudo dokku buildpacks:add bytetech-invoice https://github.com/heroku/heroku-buildpack-java.git
 
-git remote add dokku dokku@192.168.68.76:bytetech-invoice
+tar -cvf deploy.tar *
+caprover deploy -t ./deploy.tar
 
-git push dokku main
+caprover deploy --default

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.68.61:5432/bytetech-invoice
-    username: postgres
-    password: example
+    url: jdbc:postgresql://192.168.68.61:5433/bytetech-invoice
+    username: citizix_user
+    password: S3cret
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5

@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import { BellIcon, MoonIcon, SunIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
 export default function Topbar() {
-  // Initialize isDarkMode based on document class or localStorage
-  const [isDarkMode, setIsDarkMode] = useState(() => {
+  // Determine initial theme: use localStorage first, fallback to system preference
+  const getInitialTheme = () => {
+    if (typeof window === "undefined") return false; // SSR safety
+
     const saved = localStorage.getItem("theme");
-    if (saved) {
+    if (saved !== null) {
       return saved === "dark";
     }
-    return document.documentElement.classList.contains("dark");
-  });
+    // Fallback to system preference
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  };
+
+  const [isDarkMode, setIsDarkMode] = useState(getInitialTheme);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Sync dark mode state with document and localStorage
+  // Apply theme to document and save to localStorage
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -21,9 +26,12 @@ export default function Topbar() {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
+
+    // Optional: trigger resize if layout depends on theme (e.g., charts, maps)
+    window.dispatchEvent(new Event("resize"));
   }, [isDarkMode]);
 
-  // Listen for system preference changes
+  // Listen to system theme changes (only when no preference is saved)
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
@@ -31,19 +39,14 @@ export default function Topbar() {
         setIsDarkMode(mediaQuery.matches);
       }
     };
+
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   const toggleDarkMode = () => {
-  setIsDarkMode((prev) => {
-    const next = !prev;
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 10);
-    return next;
-  });
-};
+    setIsDarkMode((prev) => !prev);
+  };
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -51,10 +54,6 @@ export default function Topbar() {
     <header className="sticky top-0 bg-white dark:bg-neutral-800 border-b border-neutral-200 dark:border-neutral-700 z-10 shadow-sm">
       <div className="h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         <div className="relative w-full max-w-md">
-          {/* <input
-            placeholder="Search invoices, customers…"
-            className="w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 transition-all duration-200"
-          /> */}
           <svg
             className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400 dark:text-neutral-500"
             fill="none"
@@ -68,6 +67,10 @@ export default function Topbar() {
               d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 16.65z"
             />
           </svg>
+          {/* <input
+            placeholder="Search invoices, customers…"
+            className="w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 px-4 py-2 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 transition-all duration-200"
+          /> */}
         </div>
         <div className="flex items-center space-x-4">
           <button
@@ -97,7 +100,10 @@ export default function Topbar() {
               <span className="hidden sm:inline">Admin</span>
             </button>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg shadow-lg py-2 z-20">
+              <div
+                className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg shadow-lg py-2 z-20"
+                onClick={() => setIsDropdownOpen(false)}
+              >
                 <a
                   href="/profile"
                   className="block px-4 py-2 text-sm text-neutral-700 dark:text-neutral-200 hover:bg-primary-50 dark:hover:bg-neutral-700 transition-colors duration-200"

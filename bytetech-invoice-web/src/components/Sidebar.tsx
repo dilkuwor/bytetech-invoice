@@ -16,11 +16,11 @@ export default function Sidebar() {
         isCollapsed ? "w-16" : "w-64"
       } bg-white dark:bg-neutral-800 border-r border-neutral-200 dark:border-neutral-700 h-screen sticky top-0 hidden md:flex flex-col transition-all duration-300 ease-in-out shadow-sm`}
     >
-      <div className="p-4 border-b border-neutral-200 dark:border-neutral-700 flex items-center justify-between">
+     <div className="p-4 flex items-center justify-between">
         {!isCollapsed && (
           <div>
             <div className="text-xl font-bold text-primary-600 dark:text-primary-400">ByteTech Invoice</div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400">Admin</div>
+
           </div>
         )}
         <button

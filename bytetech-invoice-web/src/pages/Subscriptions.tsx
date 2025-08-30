@@ -21,9 +21,17 @@ export default function Subscriptions() {
     <div className="space-y-6 ">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">Subscriptions</h1>
-        <button className="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 transition-colors duration-200">
-          New Subscription
-        </button>
+        <button
+  className="px-4 py-2 bg-primary-600 dark:bg-primary-500 text-neutral-900 dark:text-white text-sm font-medium rounded-lg hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors duration-200"
+>
+  New Subscription
+</button>
+<button
+  className="sm py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+>
+  New Subscription
+</button>
+
       </div>
       <DataTable<Row>
         columns={[
